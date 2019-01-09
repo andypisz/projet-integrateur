@@ -14,3 +14,11 @@ def createNewDocker(name, port, accesskey, secretkey):
           'server', '/data'])
     #call(['docker', 'ps', '-a'])
     exit(0)
+
+def createAllDockers(number):
+    accesskey = 'accesskey'
+    secretkey = 'secretkey'
+    for i in range(0,number):
+        name = 'minio' + i
+        port = 9000 + i
+        createNewDocker(name, port, accesskey, secretkey)

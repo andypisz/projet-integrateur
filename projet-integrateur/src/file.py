@@ -25,3 +25,9 @@ def get_number_of_sub_files():
         allNumberOfSubFiles[filePath] = divide_file(filePath)
 
     return allNumberOfSubFiles
+
+def get_total_number_of_sub_files(dic):
+    total = 0
+    for value in dic.values():
+        total += value
+    return total

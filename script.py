@@ -14,7 +14,7 @@ minioClient = Minio('172.17.0.2:9000',
                     secure=False)
 
 
-#Importation des données 
+#Importation des donnees 
 #test_labels = load("./test_labels_0_10_25.npy")
 #train_labels = load("./train_labels_0_10_25.npy")
 #test_RGB = load("./test_RGB_0_10_25.npy")
@@ -35,7 +35,7 @@ test_labels = get_data_from_minio('labels', 'test_labels_0_10_25.npy')
 
 
 
-#paramètres imshow, trouvés suite à nos tests :
+#parametres imshow, trouves suite a nos tests :
 imshow_alpha = 0.85
 imshow_interpolation = "spline36"
 imshow_facteur_rgb = 4.5
@@ -47,10 +47,10 @@ labels = ["urban area", "agricultural territory", "forests", "wetlands", "surfac
 
 ### Tests ###
 
-#Tableau ontenant l'ensemble des valeurs possibles pour le paramètre interpolation de la fonction matplotlip.pyplot.imshow
+#Tableau contenant l'ensemble des valeurs possibles pour le paraetre interpolation de la fonction matplotlip.pyplot.imshow
 interpolations = ['none', 'nearest', 'bilinear', 'bicubic', 'spline16', 'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric', 'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos']
 
-#Test de toutes les valeurs possibles d'interpolation sur la 256ème image
+#Test de toutes les valeurs possibles d'interpolation sur la 256eme image
 def test_interpolation(num_image):
     for interpolation in interpolations:
         print("interpolation : ",interpolation)
@@ -58,7 +58,7 @@ def test_interpolation(num_image):
         plt.show() 
         
 #test_interpolation(10485)
-#Résultat : le meilleur semble être spline36
+#Resultat : le meilleur semble etre spline36
 
         
 def test_alpha():
@@ -68,7 +68,7 @@ def test_alpha():
         plt.show() 
         
 #test_alpha()
-#Résultat : le meilleur alpha semble être 0.85
+#Resultat : le meilleur alpha semble etre 0.85
         
 def test_facteur_rgb():
     for i in range (1,16) :
@@ -77,7 +77,7 @@ def test_facteur_rgb():
         plt.show() 
         
 #test_facteur_rgb()
-#Résultat : le meilleur semble être compris entre 4 et 5
+#Resultat : le meilleur semble etre compris entre 4 et 5
 
 def test_facteur_rgb2():
     for i in range (40,51) :
@@ -85,8 +85,8 @@ def test_facteur_rgb2():
         plt.imshow(test_RGB[256]*i/10,alpha=1, interpolation=imshow_interpolation) 
         plt.show() 
         
-#test_facteur_rgb2()
-#Résultat : le meilleur semble être 4.5
+#eest_facteur_rgb2()
+#Resultat : le meilleur semble etre 4.5
        
 
 ### FIN DES TESTS ###
@@ -94,7 +94,7 @@ def test_facteur_rgb2():
     
 
 
-#Fonction permettant de tirer au sort la prochaine technologie inconnue à étudier
+#Fonction permettant de tirer au sort la prochaine technologie inconnue a etudier
 def tirage_techno():
     techno_inconnues = ["minio","elastic search","spark"]
     random = rand(0,len(techno_inconnues)-1)
@@ -104,7 +104,7 @@ def tirage_techno():
     
 
     
-#Affichage d'images avec les paramètres choisis suite aux tests 
+#Affichage d'images avec les parametres choisis suite aux tests 
 def affiche_images(donnees,label,debut,fin):
     label_found = False
     j = 0
@@ -116,8 +116,9 @@ def affiche_images(donnees,label,debut,fin):
                 j += 1
         print("Label : ",labels[j])
         print(i)
-        plt.imshow(donnees[i]*imshow_facteur_rgb,alpha=imshow_alpha, interpolation=imshow_interpolation) 
-        plt.show()
+        plt.imshow(donnees[i]*imshow_facteur_rgb,alpha=imshow_alpha, interpolation=imshow_interpolation)
+        #plt.show()
+        plt.savefig("/tmp/img")
         label_found = False
         j = 0
         

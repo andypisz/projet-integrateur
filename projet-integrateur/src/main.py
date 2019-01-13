@@ -1,9 +1,11 @@
-from docker import *
-from file import *
+import docker
+import file
+#docker.createNewDocker("testminioscript2", "9001", "accesskey", "secretkey")
+allNumberOfSubFiles = file.get_number_of_sub_files()
+totalNumberOfSubFiles = int(file.get_total_number_of_sub_files(allNumberOfSubFiles))
 
-#createNewDocker("testminioscript2", "9001", "accesskey", "secretkey")
-allNumberOfSubFiles = get_number_of_sub_files()
-totalNumberOfSubFiles = get_total_number_of_sub_files(allNumberOfSubFiles)
-print(totalNumberOfSubFiles)
+print('totalNumberOfSubFiles: '+str(totalNumberOfSubFiles))
 
-#createAllDockers(15)
+#print(len(file.import_files().keys()))
+
+docker.createAllDockers(totalNumberOfSubFiles)

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # coding: UTF-8
 
 import os
@@ -9,8 +10,8 @@ from subprocess import call
 
 #Path of the folder containing all the files
 FILES_PATH = '/home/andy/Desktop/INSA/5A/projet-integrateur/INSA_data_images/'
-IMAGES_PATH = '/home/andy/Desktop/INSA/5A/projet-integrateur/INSA_data_images/Original_Images/'
-SUBFILES_PATH = '/home/andy/Desktop/INSA/5A/projet-integrateur/INSA_data_images/Subfiles/'
+IMAGES_PATH = FILES_PATH+'Original_Images/'
+SUBFILES_PATH = FILES_PATH+'Subfiles/'
 
 
 #Get All files in the directory

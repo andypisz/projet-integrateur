@@ -1,8 +1,10 @@
+#!/usr/bin/python3
 # coding: UTF-8
 
 import docker
 import file
 import time
+import minioManagement
 
 begin = time.time()
 
@@ -11,13 +13,14 @@ totalNumberOfSubFiles = int(file.get_total_number_of_sub_files(allNumberOfSubFil
 
 #print('totalNumberOfSubFiles: '+str(totalNumberOfSubFiles))
 
-dictionnaryOfFiles = file.import_files()
+#dictionnaryOfFiles = file.import_files()
+#file.divide_files(dictionnaryOfFiles)
 
-file.divide_files(dictionnaryOfFiles)
-
-#print(len(file.import_files().keys()))
 
 docker.createAllDockers(totalNumberOfSubFiles)
+dictionnaryOfMinios = minioManagement.initializeAllMinio(totalNumberOfSubFiles)
+print(dictionnaryOfMinios)
+minioManagement.uploadData(dictionnaryOfMinios)
 
 
 end = time.time()

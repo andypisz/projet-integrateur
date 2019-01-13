@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # coding: UTF-8
 
 from subprocess import call
@@ -8,6 +9,8 @@ def createNewDocker(name, port, accesskey, secretkey):
     portOption = port + ':' + port
     accessKeyOption = '"MINIO_ACCESS_KEY=' + accesskey + '"'
     secretKeyOption = '"MINIO_SECRET_KEY=' + secretkey + '"'
+    print(accessKeyOption)
+    print(secretKeyOption)
     call(['docker', 'run',
           '--detach',
           '-p', portOption,

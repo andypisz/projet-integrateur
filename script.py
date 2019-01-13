@@ -117,7 +117,7 @@ def affiche_images(donnees,label,debut,fin):
         print("Label : ",labels[j])
         print(i)
         plt.imshow(donnees[i]*imshow_facteur_rgb,alpha=imshow_alpha, interpolation=imshow_interpolation)
-        #plt.show()
+        plt.show()
         plt.savefig("/tmp/img")
         label_found = False
         j = 0

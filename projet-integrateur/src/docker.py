@@ -1,5 +1,6 @@
+# coding: UTF-8
+
 from subprocess import call
-import time
 
 FIRST_PORT_NUMBER = 9000
 

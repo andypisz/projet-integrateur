@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 import docker
 import file
 import time
@@ -15,7 +17,7 @@ file.divide_files(dictionnaryOfFiles)
 
 #print(len(file.import_files().keys()))
 
-#docker.createAllDockers(totalNumberOfSubFiles)
+docker.createAllDockers(totalNumberOfSubFiles)
 
 
 end = time.time()

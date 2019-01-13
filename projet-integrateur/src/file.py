@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 import os
 from math import ceil
 from numpy import load
@@ -23,7 +25,7 @@ def get_number_of_sub_files(path):
     if (size < SIZE):
         return 1
     else:
-        return ceil(size/SIZE)
+        return int(ceil(size/SIZE))
 
 
 def get_all_number_of_sub_files():

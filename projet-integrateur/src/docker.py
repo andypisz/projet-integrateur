@@ -6,7 +6,7 @@ from subprocess import call
 FIRST_PORT_NUMBER = 9000
 
 def createNewDocker(name, port, accesskey, secretkey):
-    portOption = port + ':' + port
+    portOption = port + ':' + str(FIRST_PORT_NUMBER)
     accessKeyOption = '"MINIO_ACCESS_KEY=' + accesskey + '"'
     secretKeyOption = '"MINIO_SECRET_KEY=' + secretkey + '"'
     print(accessKeyOption)

@@ -8,7 +8,7 @@ file_SUBFILES_PATH = file_FILES_PATH+'Subfiles/'
 file_SIZE = 250000000
 
 #docker constants
-docker_FIRST_PORT_NUMBER = 90
+docker_FIRST_PORT_NUMBER = 9000
 docker_ACCESS_KEY = 'accesskey'
 docker_SECRET_KEY = 'secretkey'
 

@@ -7,18 +7,19 @@ from numpy import load
 from numpy import save
 from numpy import arange
 from subprocess import call
+import globalConstants
 
 #Path of the folder containing all the files
-FILES_PATH = '/home/andy/Desktop/INSA/5A/projet-integrateur/INSA_data_images/'
-IMAGES_PATH = FILES_PATH+'Original_Images/'
-SUBFILES_PATH = FILES_PATH+'Subfiles/'
+FILES_PATH = globalConstants.file_FILES_PATH
+IMAGES_PATH = globalConstants.file_IMAGES_PATH
+SUBFILES_PATH = globalConstants.file_SUBFILES_PATH
 
 
 #Get All files in the directory
 ALL_FILES = os.listdir(IMAGES_PATH)
 
 #Size max of the file we want on a docker container : 250 MB
-SIZE = 250000000
+SIZE = globalConstants.file_SIZE
 
 
 def get_number_of_sub_files(path):

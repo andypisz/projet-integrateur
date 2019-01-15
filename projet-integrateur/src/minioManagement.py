@@ -3,16 +3,16 @@
 
 from minio import Minio
 from minio.error import (ResponseError, BucketAlreadyOwnedByYou, BucketAlreadyExists)
-import docker
+import globalConstants
 
 
-ip_adress = '172.17.0.2'
+ip_adress = globalConstants.minio_IP_ADRESS
 
 def initializeMinio(endpoint):
     # Initialize minioClient with an endpoint and access/secret keys.
     minioClient = Minio(endpoint,
-                        access_key='accesskey',
-                        secret_key='secretkey',
+                        access_key=globalConstants.docker_ACCESS_KEY,
+                        secret_key=globalConstants.docker_SECRET_KEY,
                         secure=False)
     return minioClient
 
@@ -20,7 +20,7 @@ def initializeMinio(endpoint):
 def initializeAllMinio(numberOfMinio):
     dictionnaryOfMinio = {}
     for i in range (0, numberOfMinio):
-        endpoint = ip_adress+':'+str(docker.FIRST_PORT_NUMBER+i)
+        endpoint = ip_adress+':'+str(globalConstants.docker_FIRST_PORT_NUMBER+i)
         minioName = 'minio' + str(i)
         print("Initializing minio client : "+minioName)
         minioClient = initializeMinio(endpoint)

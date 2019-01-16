@@ -39,35 +39,28 @@ def initializeAllMinio(numberOfMinio):
     return dictionnaryOfMinio
 
 def uploadData(dictionnaryOfMinio):
-    for minio in dictionnaryOfMinio:
+    dictionnaryOfSubFiles = constructDictionnaryOfSubfiles()
+    for minio, subfile in zip(dictionnaryOfMinio, dictionnaryOfSubFiles):
         minioClient = dictionnaryOfMinio[minio]
         try:
-            #minioClient.make_bucket('data', location="eu-west-1")
+            minioClient.make_bucket('data', location="eu-west-1")
             print('bucketing')
         except BucketAlreadyOwnedByYou as err:
-            pass
-        except BucketAlreadyExists as err:
-            pass
+            print(err)
         except ResponseError as err:
-            raise
-        else:
-            # Put an object 'test_RGB_0_10_25.npy' with contents from 'test_RGB_0_10_25.npy'.
-            try:
-                # minioClient.fput_object('images', 'test_RGB_0_10_25.npy',
-                #                         '/home/hamid/Téléchargements/INSA_data_images/test_RGB_0_10_25.npy')
-                print(ALL_FILES)
-                print('Uploaded ' + 'data' + ' on ' + minio)
-            except ResponseError as err:
-                print(err)
+            print(err)
+        try:
+            minioClient.fput_object('data', subfile, dictionnaryOfSubFiles[subfile])
+            print('Uploaded ' + subfile + ' on ' + minio)
+        except ResponseError as err:
+            print(err)
 
 def constructDictionnaryOfSubfiles():
     dictionnaryOfSubfiles = {}
     for file in ALL_FILES:
-        print(os.listdir(SUBFILES_PATH+file))
         for subfile in os.listdir(SUBFILES_PATH+file):
             dictionnaryOfSubfiles[subfile] = SUBFILES_PATH+file+'/'+subfile
     return dictionnaryOfSubfiles
 
-#dic = initializeAllMinio(22)
-#uploadData(dic)
-print(constructDictionnaryOfSubfiles())
+dic = initializeAllMinio(22)
+uploadData(dic)

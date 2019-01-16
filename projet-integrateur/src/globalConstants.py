@@ -14,3 +14,4 @@ docker_SECRET_KEY = 'secretkey'
 
 #minio constants
 minio_IP_ADRESS = '127.0.0.1'
+minio_BUCKET_NAME = 'data'

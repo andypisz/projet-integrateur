@@ -5,6 +5,7 @@ from minio import Minio
 from minio.error import (ResponseError, BucketAlreadyOwnedByYou, BucketAlreadyExists)
 import globalConstants
 import os
+import time
 
 
 #Path of the folder containing all the files
@@ -18,6 +19,7 @@ ALL_FILES = os.listdir(SUBFILES_PATH)
 
 
 ip_adress = globalConstants.minio_IP_ADRESS
+bucket_name = globalConstants.minio_BUCKET_NAME
 
 def initializeMinio(endpoint):
     # Initialize minioClient with an endpoint and access/secret keys.
@@ -43,14 +45,14 @@ def uploadData(dictionnaryOfMinio):
     for minio, subfile in zip(dictionnaryOfMinio, dictionnaryOfSubFiles):
         minioClient = dictionnaryOfMinio[minio]
         try:
-            minioClient.make_bucket('data', location="eu-west-1")
+            minioClient.make_bucket(bucket_name, location="eu-west-1")
             print('bucketing')
         except BucketAlreadyOwnedByYou as err:
             print(err)
         except ResponseError as err:
             print(err)
         try:
-            minioClient.fput_object('data', subfile, dictionnaryOfSubFiles[subfile])
+            minioClient.fput_object(bucket_name, subfile, dictionnaryOfSubFiles[subfile])
             print('Uploaded ' + subfile + ' on ' + minio)
         except ResponseError as err:
             print(err)
@@ -62,5 +64,11 @@ def constructDictionnaryOfSubfiles():
             dictionnaryOfSubfiles[subfile] = SUBFILES_PATH+file+'/'+subfile
     return dictionnaryOfSubfiles
 
-dic = initializeAllMinio(22)
-uploadData(dic)
+
+def mainMinio(totalNumberOfSubFiles):
+    dictionnaryOfMinios = initializeAllMinio(totalNumberOfSubFiles)
+
+    begin_upload = time.time()
+    uploadData(dictionnaryOfMinios)
+    end_upload = time.time()
+    print('\n(Time for upload : ' + str(end_upload - begin_upload) + ' seconds)')

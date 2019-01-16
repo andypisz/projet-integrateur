@@ -3,6 +3,7 @@
 
 import globalConstants
 from subprocess import call
+import time
 
 FIRST_PORT_NUMBER = globalConstants.docker_FIRST_PORT_NUMBER
 ACCESS_KEY = globalConstants.docker_ACCESS_KEY
@@ -27,3 +28,9 @@ def createAllDockers(number):
         print('creating '+name)
         createNewDocker(name, port, accesskey, secretkey, volumeOption)
         print('created')
+
+def mainDocker(number):
+    begin_docker = time.time()
+    createAllDockers(number)
+    end_docker = time.time()
+    print('\n(Time for creating all dockers : ' + str(end_docker - begin_docker) + ' seconds)')

@@ -8,6 +8,7 @@ from numpy import save
 from numpy import arange
 from subprocess import call
 import globalConstants
+import time
 
 #Path of the folder containing all the files
 FILES_PATH = globalConstants.file_FILES_PATH
@@ -39,9 +40,9 @@ def get_all_number_of_sub_files():
 
     return allNumberOfSubFiles
 
-def get_total_number_of_sub_files(dic):
+def get_total_number_of_sub_files(allNumberOfSubFiles):
     total = 0
-    for value in dic.values():
+    for value in allNumberOfSubFiles.values():
         total += value
     return total
 
@@ -86,6 +87,7 @@ def divide_files(dictionnaryOfFiles):
                 savePath = newPath + '/' + str(j) + file
                 save(savePath, subfilearray)
                 print('created '+str(j+1)+'/'+str(numberOfSubFile))
+    return allNumberOfSubFiles
 
 def check_subfiles_directory_existance_and_create():
     directories = os.listdir(FILES_PATH)
@@ -94,6 +96,20 @@ def check_subfiles_directory_existance_and_create():
         if(directory == "Subfiles"):
             call(["rm", "-rf", directoryPath])
     call(["mkdir", directoryPath])
+
+
+def mainFile():
+    begin_import = time.time()
+    dictionnaryOfFiles = import_files()
+    end_import = time.time()
+    print('\n(Time for import : ' + str(end_import-begin_import) + ' seconds)')
+
+    begin_divide = time.time()
+    allNumberOfSubFiles = divide_files(dictionnaryOfFiles)
+    end_divide = time.time()
+    print('\n(Time for creating subfiles : ' + str(end_divide - begin_divide) + ' seconds)')
+
+    return get_total_number_of_sub_files(allNumberOfSubFiles)
 
 
 

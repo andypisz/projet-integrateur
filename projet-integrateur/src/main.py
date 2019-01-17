@@ -8,7 +8,9 @@ import minioManagement
 
 begin = time.time()
 
-totalNumberOfSubFiles = file.mainFile()
+allNumberOfSubFiles = file.get_all_number_of_sub_files()
+totalNumberOfSubFiles = file.get_total_number_of_sub_files(allNumberOfSubFiles)
+#totalNumberOfSubFiles = file.mainFile()
 docker.mainDocker(totalNumberOfSubFiles)
 minioManagement.mainMinio(totalNumberOfSubFiles)
 

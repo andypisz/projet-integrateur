@@ -15,4 +15,8 @@ else:
     for i in range(int(sys.argv[1])):
         name = 'minio'+str(i)
         rmDocker(name)
+    call("mv /mnt/data /mnt/save", shell=True)
+    call("rm -rf /mnt/data*", shell=True)
+    call("mv /mnt/save /mnt/data", shell=True)
+
 

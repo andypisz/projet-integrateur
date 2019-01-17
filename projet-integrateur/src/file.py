@@ -2,10 +2,8 @@
 # coding: UTF-8
 
 import os
-from math import ceil
-from numpy import load
-from numpy import save
-from numpy import arange
+from math import ceil, floor
+from numpy import load, save, arange
 from subprocess import call
 import globalConstants
 import time
@@ -71,7 +69,7 @@ def divide_files(dictionnaryOfFiles):
         else:
             newPath = SUBFILES_PATH + file
             call(["mkdir", newPath])
-            lengthOfSubFile = int(ceil(len(dictionnaryOfFiles[file])/numberOfSubFile))
+            lengthOfSubFile = int(floor(len(dictionnaryOfFiles[file])/numberOfSubFile))
             print('total length : '+str(len(dictionnaryOfFiles[file])))
             print('subfiles length : '+str(lengthOfSubFile))
             for j in range (0, numberOfSubFile):

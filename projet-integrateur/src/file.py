@@ -69,7 +69,7 @@ def divide_files(dictionnaryOfFiles):
         else:
             newPath = SUBFILES_PATH + file
             call(["mkdir", newPath])
-            lengthOfSubFile = int(floor(len(dictionnaryOfFiles[file])/numberOfSubFile))
+            lengthOfSubFile = int(ceil(len(dictionnaryOfFiles[file])/numberOfSubFile))
             print('total length : '+str(len(dictionnaryOfFiles[file])))
             print('subfiles length : '+str(lengthOfSubFile))
             for j in range (0, numberOfSubFile):

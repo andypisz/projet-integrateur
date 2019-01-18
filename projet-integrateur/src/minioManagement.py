@@ -6,6 +6,7 @@ from minio.error import (ResponseError, BucketAlreadyOwnedByYou, BucketAlreadyEx
 import globalConstants
 import os
 import time
+import json
 
 
 #Path of the folder containing all the files
@@ -65,10 +66,25 @@ def constructDictionnaryOfSubfiles():
     return dictionnaryOfSubfiles
 
 
+def editConfigForElasticSearch(totalNumberOfFiles):
+    for i in range (totalNumberOfFiles):
+        configPath = globalConstants.minio_CONFIG_PATH_START+str(i)+globalConstants.minio_CONFIG_END_PATH
+        configFileRead = open(configPath, "r+")
+        configJson = json.load(configFileRead)
+        configJson["notify"]["elasticsearch"]["1"]["enable"] = "true"
+        configJson["notify"]["elasticsearch"]["1"]["format"] = "namespace"
+        configJson["notify"]["elasticsearch"]["1"]["url"] = "127.0.0.1:9200"
+        configJson["notify"]["elasticsearch"]["1"]["index"] = "minio_events"
+        configFileRead.seek(0)
+        json.dump(configJson, configFileRead, indent=4)
+        configFileRead.truncate()
+        print("Modified config.json for minio"+str(i))
+
+
 def mainMinio(totalNumberOfSubFiles):
     dictionnaryOfMinios = initializeAllMinio(totalNumberOfSubFiles)
-
     begin_upload = time.time()
     uploadData(dictionnaryOfMinios)
     end_upload = time.time()
+    editConfigForElasticSearch(totalNumberOfSubFiles)
     print('\n(Time for upload : ' + str(end_upload - begin_upload) + ' seconds)')

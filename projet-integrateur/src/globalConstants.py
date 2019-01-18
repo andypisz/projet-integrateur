@@ -15,3 +15,5 @@ docker_SECRET_KEY = 'secretkey'
 #minio constants
 minio_IP_ADRESS = '127.0.0.1'
 minio_BUCKET_NAME = 'data'
+minio_CONFIG_PATH_START = '/mnt/data'
+minio_CONFIG_END_PATH = '/.minio.sys/config/config.json'

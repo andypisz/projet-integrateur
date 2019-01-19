@@ -42,9 +42,10 @@ def initializeAllMinio(numberOfMinio):
     return dictionnaryOfMinio
 
 def uploadData(dictionnaryOfMinio):
-    dictionnaryOfSubFiles = constructDictionnaryOfSubfiles()
-    for minio, subfile in zip(dictionnaryOfMinio, dictionnaryOfSubFiles):
+    for minio in dictionnaryOfMinio:
         minioClient = dictionnaryOfMinio[minio]
+        subfilesPath = SUBFILES_PATH+minio+'/'
+        subfiles = os.listdir(subfilesPath)
         try:
             minioClient.make_bucket(bucket_name, location="eu-west-1")
             print('bucketing')
@@ -53,17 +54,12 @@ def uploadData(dictionnaryOfMinio):
         except ResponseError as err:
             print(err)
         try:
-            minioClient.fput_object(bucket_name, subfile, dictionnaryOfSubFiles[subfile])
-            print('Uploaded ' + subfile + ' on ' + minio)
+            for subfile in subfiles:
+                pathToUpload = subfilesPath+subfile
+                minioClient.fput_object(bucket_name, subfile, pathToUpload)
+                print('Uploaded ' + subfile + ' on ' + minio)
         except ResponseError as err:
             print(err)
-
-def constructDictionnaryOfSubfiles():
-    dictionnaryOfSubfiles = {}
-    for file in ALL_FILES:
-        for subfile in os.listdir(SUBFILES_PATH+file):
-            dictionnaryOfSubfiles[subfile] = SUBFILES_PATH+file+'/'+subfile
-    return dictionnaryOfSubfiles
 
 
 def editConfigForElasticSearch(totalNumberOfFiles):

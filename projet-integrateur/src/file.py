@@ -83,38 +83,51 @@ def import_files():
 
 
 #Function to divide all the files into subfiles and put them into the good directories
-#Return the total number of subfiles
-def divide_files(dictionnaryOfFiles):
+#Return an array with all the number of subfiles
+def divide_files(dictionnaryOfFiles, directoryFiles):
     check_subfiles_directory_existance_and_create()
     allNumberOfSubFiles = get_all_number_of_sub_files()
-    for file in dictionnaryOfFiles:
-        print("\n*** Working on : "+file+" ***\n")
-        numberOfSubFile = allNumberOfSubFiles[file]
+    i = 0
+    for directory in directoryFiles:
+        if (re.match(".*RGB.*",directoryFiles[directory][0])):
+            fileRGB = directoryFiles[directory][0]
+            filelabel = directoryFiles[directory][1]
+        else:
+            fileRGB = directoryFiles[directory][1]
+            filelabel = directoryFiles[directory][0]
+        print("\n*** Working on : "+fileRGB+' and '+filelabel+" ***\n")
+        numberOfSubFile = allNumberOfSubFiles[fileRGB]
         print('number of sub files to create : '+str(numberOfSubFile))
         if(numberOfSubFile == 1):
-            newPath = SUBFILES_PATH+file
+            newPath = SUBFILES_PATH+'minio'+str(i)
             call(["mkdir", newPath])
-            savePath = newPath+'/'+file
-            save(savePath, dictionnaryOfFiles[file])
+            savePathRGB = newPath+'/'+fileRGB
+            savePathlabel = newPath+'/'+filelabel
+            save(savePathRGB, dictionnaryOfFiles[fileRGB])
+            save(savePathlabel, dictionnaryOfFiles[filelabel])
             print('created 1/1')
         else:
-            newPath = SUBFILES_PATH + file
+            newPath = SUBFILES_PATH+'minio'+str(i)
             call(["mkdir", newPath])
-            lengthOfSubFile = int(ceil(len(dictionnaryOfFiles[file])/numberOfSubFile))
-            print('total length : '+str(len(dictionnaryOfFiles[file])))
+            lengthOfSubFile = int(ceil(len(dictionnaryOfFiles[fileRGB])/numberOfSubFile))
+            print('total length : '+str(len(dictionnaryOfFiles[fileRGB]))+' // '++str(len(dictionnaryOfFiles[filelabel])))
             print('subfiles length : '+str(lengthOfSubFile))
             for j in range (0, numberOfSubFile):
                 #premiere boucle : de 0 a 8561-1, deuxieme : de 8561 à 8561*2-1, troisieme : de 8561*2 à 8561*3-1 ...
                 startIndex = lengthOfSubFile*j
                 endIndex = lengthOfSubFile*(j+1)
-                if (endIndex >= len(dictionnaryOfFiles[file])):
-                    endIndex = len(dictionnaryOfFiles[file])
+                if (endIndex >= len(dictionnaryOfFiles[fileRGB])):
+                    endIndex = len(dictionnaryOfFiles[fileRGB])
                 indexes = arange(startIndex, endIndex)
-                filearray = dictionnaryOfFiles[file]
+                filearrayRGB = dictionnaryOfFiles[fileRGB]
+                filearraylabel = dictionnaryOfFiles[filelabel]
                 print('start : '+str(indexes[0])+' / end : '+str(indexes[-1]))
-                subfilearray = [ filearray[index] for index in indexes ]
-                savePath = newPath + '/' + str(j) + file
-                save(savePath, subfilearray)
+                subfilearrayrgb = [ filearrayRGB[index] for index in indexes ]
+                subfilearraylabel = [ filearraylabel[index] for index in indexes ]
+                savePathRGB = newPath + '/' + str(j) + fileRGB
+                savePathlabel = newPath + '/' + str(j) + filelabel
+                save(savePathRGB, subfilearrayrgb)
+                save(savePathlabel, subfilearraylabel)
                 print('created '+str(j+1)+'/'+str(numberOfSubFile))
     return allNumberOfSubFiles
 
@@ -134,21 +147,16 @@ def check_subfiles_directory_existance_and_create():
 #Function that use all the previous functions for the project
 def mainFile():
     begin_import = time.time()
-    dictionnaryOfFiles = import_files()
+    dictionnaryOfFiles, directoryFiles = import_files()
     end_import = time.time()
     print('\n(Time for import : ' + str(end_import-begin_import) + ' seconds)')
 
     begin_divide = time.time()
-    allNumberOfSubFiles = divide_files(dictionnaryOfFiles)
+    allNumberOfSubFiles = divide_files(dictionnaryOfFiles, directoryFiles)
     end_divide = time.time()
     print('\n(Time for creating subfiles : ' + str(end_divide - begin_divide) + ' seconds)')
 
     return get_total_number_of_sub_files(allNumberOfSubFiles)
-
-all = get_all_number_of_sub_files()
-print(get_total_number_of_sub_files(all))
-dicOfFiles, directoryFiles = import_files()
-print(directoryFiles)
 
 
 

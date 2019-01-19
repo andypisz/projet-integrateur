@@ -68,7 +68,6 @@ def import_files():
         directoryPath = IMAGES_PATH+directory
         i = 0
         for file in os.listdir(directoryPath):
-            #if(file != 'train_RGB_0_10_25.npy'):
             filePath = directoryPath + '/' + file
             dictionnaryOfFiles[file] = load(filePath)
             print('loaded: '+file)
@@ -106,13 +105,14 @@ def divide_files(dictionnaryOfFiles, directoryFiles):
             save(savePathRGB, dictionnaryOfFiles[fileRGB])
             save(savePathlabel, dictionnaryOfFiles[filelabel])
             print('created 1/1')
+            i+=1
         else:
-            newPath = SUBFILES_PATH+'minio'+str(i)
-            call(["mkdir", newPath])
-            lengthOfSubFile = int(ceil(len(dictionnaryOfFiles[fileRGB])/numberOfSubFile))
-            print('total length : '+str(len(dictionnaryOfFiles[fileRGB]))+' // '++str(len(dictionnaryOfFiles[filelabel])))
+            lengthOfSubFile = int(floor(len(dictionnaryOfFiles[fileRGB])/numberOfSubFile))+1
+            print('total length : '+str(len(dictionnaryOfFiles[fileRGB]))+' // '+str(len(dictionnaryOfFiles[filelabel])))
             print('subfiles length : '+str(lengthOfSubFile))
             for j in range (0, numberOfSubFile):
+                newPath = SUBFILES_PATH + 'minio' + str(i)
+                call(["mkdir", newPath])
                 #premiere boucle : de 0 a 8561-1, deuxieme : de 8561 à 8561*2-1, troisieme : de 8561*2 à 8561*3-1 ...
                 startIndex = lengthOfSubFile*j
                 endIndex = lengthOfSubFile*(j+1)
@@ -129,6 +129,7 @@ def divide_files(dictionnaryOfFiles, directoryFiles):
                 save(savePathRGB, subfilearrayrgb)
                 save(savePathlabel, subfilearraylabel)
                 print('created '+str(j+1)+'/'+str(numberOfSubFile))
+                i+=1
     return allNumberOfSubFiles
 
 
@@ -157,6 +158,8 @@ def mainFile():
     print('\n(Time for creating subfiles : ' + str(end_divide - begin_divide) + ' seconds)')
 
     return get_total_number_of_sub_files(allNumberOfSubFiles)
+
+mainFile()
 
 
 

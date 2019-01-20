@@ -17,3 +17,7 @@ minio_IP_ADRESS = '127.0.0.1'
 minio_BUCKET_NAME = 'data'
 minio_CONFIG_PATH_START = '/mnt/data'
 minio_CONFIG_END_PATH = '/.minio.sys/config/config.json'
+
+#elasticsearch constants
+elasticsearch_TEST_LABEL_PATH = file_IMAGES_PATH+'1/test_labels_0_10_25.npy'
+elasticsearch_TRAIN_LABEL_PATH = file_IMAGES_PATH+'2/train_labels_0_10_25.npy'

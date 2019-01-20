@@ -7,6 +7,7 @@ import globalConstants
 import os
 from numpy import load
 import json
+import time
 
 
 def initializeIndexes(es):
@@ -36,85 +37,55 @@ def modifyLabelsArray(path):
                 break
     return new_labels
 
-def createJsonBody(array):
-    data = []
+def createIndices(es, indexName, array):
     i = 0
+    es.indices.create(index=indexName)
     for value in array:
-        label = {}
-        label["index"]=i
-        label["value"]=value
-        data.append(label)
-        if (i==900):
-            break
-        i+=1
-    return json.dumps({"labels": data})
+        #print(str(i)+' // '+str(value))
+        es.index(index=indexName, doc_type='label', id=i, body={'value': value})
+        i += 1
+    print(i)
+
 
 
 def mainElasticSearch():
-    #call('docker run --detach --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.5.4', shell=True)
-    es = Elasticsearch("localhost:9200")
+    call('docker run --detach --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.5.4', shell=True)
+    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
     testArray = modifyLabelsArray(globalConstants.elasticsearch_TEST_LABEL_PATH)
-    #trainArray = modifyLabelsArray(globalConstants.elasticsearch_TRAIN_LABEL_PATH)
-    testBody = createJsonBody(testArray)
-    #trainBody = createJsonBody(trainArray)
-    es.indices.delete("test_index", ignore=[400, 404])
-    es.indices.delete("labels", ignore=[400, 404])
-    es.indices.create(index="labels", body=json.dumps({
-        "mappings": {
-            "label": {
-                "properties": {
-                    "labels": {
-                        "type": "nested",
-                        "properties": {
-                            "index": {"type": "keyword"},
-                            "value": {"type": "keyword"}
-                        }
-                    }
-                }
-            }
-        }
-    }))
-    print(es.index(index="labels", doc_type="label", id=1, body=testBody, ignore=400))
-    print(es.get(index="labels", doc_type="label", id=1))
-    print(es.search(index="labels", body=json.dumps({
-        "query": {
-            "nested": {
-                "path": "labels",
-                "query": {
-                    "bool": {
-                        "must": [
-                            {"match": {"labels.value": "1"}}
-                        ]
-                    }
-                }
-            }
-        }
-    })))
-    query = es.search(index="labels", body=json.dumps({
-        "query": { "match_all": {} }
-    }))
-    print(query)
-    es.indices.delete(index="test")
-    es.create(index="test", doc_type="articles", id=1, body={"content": "One more fox"})
-    res = es.search(index="test", doc_type="articles", body={"query": {"match": {"content": "fox"}}})
-    print(res)
+    trainArray = modifyLabelsArray(globalConstants.elasticsearch_TRAIN_LABEL_PATH)
+    #es.indices.delete(index='test_labels', ignore=[400, 404])
+
+    begin_test = time.time()
+    createIndices(es, 'test_labels', testArray)
+    end_test = time.time()
+    print('\n(Time for test index : ' + str(end_test - begin_test) + ' seconds)')
+
+    begin_train = time.time()
+    createIndices(es, 'train_labels', trainArray)
+    end_train = time.time()
+    print('\n(Time for train index : ' + str(end_train - begin_train) + ' seconds)')
+
+    #print(es.get(index='test_labels', doc_type='label', id=1))
+    #print(es.search(index="test_labels", body={"query": {"match": {'value': 2}}}))
 
 
-#mainElasticSearch()
+mainElasticSearch()
 # make sure ES is up and running
-import requests
-res = requests.get('http://localhost:9200')
-print(res.content)
-es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-import json
-
-r = requests.get('http://localhost:9200')
-i = 1
-while r.status_code == 200:
-    r = requests.get('http://swapi.co/api/people/' + str(i))
-    es.index(index='sw', doc_type='people', id=i, body=json.loads(r.content))
-    i = i + 1
-
-print(i)
-print(es.get(index='sw', doc_type='people', id=4))
-print(es.search(index="sw", body={"query": {"match": {'name':'Darth Vader'}}}))
+# import requests
+# res = requests.get('http://localhost:9200')
+# print(res.content)
+# es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+# import json
+#
+# r = requests.get('http://localhost:9200')
+# i = 1
+# while i<5:
+#     r = requests.get('http://swapi.co/api/people/' + str(i))
+#     print(r.content)
+#     print(json.loads(r.content))
+#     es.index(index='sw', doc_type='people', id=i, body=json.loads(r.content))
+#     i = i + 1
+#
+# print(i)
+# print(es.get(index='sw', doc_type='people', id=4))
+# print(es.search(index="sw", body={"query": {"match": {'name':'Darth Vader'}}}))

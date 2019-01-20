@@ -21,3 +21,5 @@ minio_CONFIG_END_PATH = '/.minio.sys/config/config.json'
 #elasticsearch constants
 elasticsearch_TEST_LABEL_PATH = file_IMAGES_PATH+'1/test_labels_0_10_25.npy'
 elasticsearch_TRAIN_LABEL_PATH = file_IMAGES_PATH+'2/train_labels_0_10_25.npy'
+elasticsearch_TEST_LENGTH = 42805
+elasticsearch_TRAIN_LENGTH = 42805

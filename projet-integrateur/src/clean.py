@@ -16,5 +16,7 @@ else:
         name = 'minio'+str(i)
         rmDocker(name)
     call("rm -rf /mnt/data*", shell=True)
+    call("docker stop elasticsearch", shell=True)
+    call("docker rm elasticsearch", shell=True)
 
 

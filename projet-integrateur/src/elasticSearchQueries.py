@@ -32,9 +32,20 @@ def makeArraysOfIds(allResults):
 
 
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+
+
 es.indices.put_settings(index="test_labels",
                         body={"index" : {
                                 "max_result_window" : globalConstants.elasticsearch_TEST_LENGTH
                               }})
-allNumberOfResults, allResults = checkNumberOfResults("test_labels", globalConstants.elasticsearch_TEST_LENGTH)
-dictionnaryOfArraysOfIds = makeArraysOfIds(allResults)
+allNumberOfResultsTest, allResultsTest = checkNumberOfResults("test_labels", globalConstants.elasticsearch_TEST_LENGTH)
+dictionnaryOfArraysOfIdsTest = makeArraysOfIds(allResultsTest)
+
+
+
+es.indices.put_settings(index="train_labels",
+                        body={"index" : {
+                                "max_result_window" : globalConstants.elasticsearch_TRAIN_LENGTH
+                              }})
+allNumberOfResultsTrain, allResultsTrain = checkNumberOfResults("train_labels", globalConstants.elasticsearch_TRAIN_LENGTH)
+dictionnaryOfArraysOfIdsTrain = makeArraysOfIds(allResultsTrain)

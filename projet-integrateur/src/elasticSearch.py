@@ -90,7 +90,31 @@ def mainElasticSearch():
             }
         }
     })))
+    query = es.search(index="labels", body=json.dumps({
+        "query": { "match_all": {} }
+    }))
+    print(query)
+    es.indices.delete(index="test")
+    es.create(index="test", doc_type="articles", id=1, body={"content": "One more fox"})
+    res = es.search(index="test", doc_type="articles", body={"query": {"match": {"content": "fox"}}})
+    print(res)
 
 
+#mainElasticSearch()
+# make sure ES is up and running
+import requests
+res = requests.get('http://localhost:9200')
+print(res.content)
+es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+import json
 
-mainElasticSearch()
+r = requests.get('http://localhost:9200')
+i = 1
+while r.status_code == 200:
+    r = requests.get('http://swapi.co/api/people/' + str(i))
+    es.index(index='sw', doc_type='people', id=i, body=json.loads(r.content))
+    i = i + 1
+
+print(i)
+print(es.get(index='sw', doc_type='people', id=4))
+print(es.search(index="sw", body={"query": {"match": {'name':'Darth Vader'}}}))

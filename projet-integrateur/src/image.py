@@ -15,16 +15,27 @@ labels = ["urban area", "agricultural territory", "forests", "wetlands", "surfac
 
 
 # Affichage d'images avec les parametres choisis suite aux tests
-def affiche_images_from_indices_list(donnees, labels, indices_list, debut, fin):
+def affiche_images_from_indices_list(donnees, label, indices_list, debut, fin):
+    label_found = False
+    j = 0
     for i in range(debut, fin):
-        index = indices_list[i]
-        print("Label : ", labels[index])
+        index = int(indices_list[i])
+        while (not label_found):
+            if label[index][j] == 1:
+                label_found = True
+            else:
+                j += 1
+        print("Label : ", labels[j])
         print("Image number "+str(i)+" // index : "+str(index))
         plt.imshow(donnees[index] * imshow_facteur_rgb, alpha=imshow_alpha, interpolation=imshow_interpolation)
         plt.show()
+        label_found=False
+        j = 0
 
 
 def mainImage(pathRGB, pathLabel, indices_list):
-    test_RGB = load(pathRGB)
     test_labels = load(pathLabel)
+    print("loaded labels")
+    test_RGB = load(pathRGB)
+    print("loaded images")
     affiche_images_from_indices_list(test_RGB, test_labels, indices_list, 0, 10)

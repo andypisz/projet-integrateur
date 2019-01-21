@@ -46,4 +46,4 @@ es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 dictionnaryOfArraysOfIdsTest = mainQuery("test_labels", globalConstants.elasticsearch_TEST_LENGTH)
 dictionnaryOfArraysOfIdsTrain = mainQuery("train_labels", globalConstants.elasticsearch_TRAIN_LENGTH)
-image.mainImage(globalConstants.elasticsearch_TEST_RGB_PATH, globalConstants.elasticsearch_TEST_LABEL_PATH, dictionnaryOfArraysOfIdsTest)
+image.mainImage(globalConstants.elasticsearch_TEST_RGB_PATH, globalConstants.elasticsearch_TEST_LABEL_PATH, dictionnaryOfArraysOfIdsTest[0])

@@ -3,6 +3,7 @@
 
 from elasticsearch import Elasticsearch
 import globalConstants
+import image
 
 def checkNumberOfResults(index, size):
     total = 0
@@ -45,3 +46,4 @@ es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 dictionnaryOfArraysOfIdsTest = mainQuery("test_labels", globalConstants.elasticsearch_TEST_LENGTH)
 dictionnaryOfArraysOfIdsTrain = mainQuery("train_labels", globalConstants.elasticsearch_TRAIN_LENGTH)
+image.mainImage(globalConstants.elasticsearch_TEST_RGB_PATH, globalConstants.elasticsearch_TEST_LABEL_PATH, dictionnaryOfArraysOfIdsTest)

@@ -70,22 +70,3 @@ def mainElasticSearch():
 
 
 mainElasticSearch()
-# make sure ES is up and running
-# import requests
-# res = requests.get('http://localhost:9200')
-# print(res.content)
-# es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-# import json
-#
-# r = requests.get('http://localhost:9200')
-# i = 1
-# while i<5:
-#     r = requests.get('http://swapi.co/api/people/' + str(i))
-#     print(r.content)
-#     print(json.loads(r.content))
-#     es.index(index='sw', doc_type='people', id=i, body=json.loads(r.content))
-#     i = i + 1
-#
-# print(i)
-# print(es.get(index='sw', doc_type='people', id=4))
-# print(es.search(index="sw", body={"query": {"match": {'name':'Darth Vader'}}}))

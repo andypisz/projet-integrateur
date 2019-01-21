@@ -30,22 +30,18 @@ def makeArraysOfIds(allResults):
         dictionnaryOfArraysOfIds[key] = newArray
     return dictionnaryOfArraysOfIds
 
+def mainQuery(index, length):
+    es.indices.put_settings(index=index,
+                            body={"index": {
+                                "max_result_window": length
+                            }})
+    allNumberOfResultsTest, allResultsTest = checkNumberOfResults(index, length)
+    return makeArraysOfIds(allResultsTest)
+
+
 
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 
-es.indices.put_settings(index="test_labels",
-                        body={"index" : {
-                                "max_result_window" : globalConstants.elasticsearch_TEST_LENGTH
-                              }})
-allNumberOfResultsTest, allResultsTest = checkNumberOfResults("test_labels", globalConstants.elasticsearch_TEST_LENGTH)
-dictionnaryOfArraysOfIdsTest = makeArraysOfIds(allResultsTest)
-
-
-
-es.indices.put_settings(index="train_labels",
-                        body={"index" : {
-                                "max_result_window" : globalConstants.elasticsearch_TRAIN_LENGTH
-                              }})
-allNumberOfResultsTrain, allResultsTrain = checkNumberOfResults("train_labels", globalConstants.elasticsearch_TRAIN_LENGTH)
-dictionnaryOfArraysOfIdsTrain = makeArraysOfIds(allResultsTrain)
+dictionnaryOfArraysOfIdsTest = mainQuery("test_labels", globalConstants.elasticsearch_TEST_LENGTH)
+dictionnaryOfArraysOfIdsTrain = mainQuery("train_labels", globalConstants.elasticsearch_TRAIN_LENGTH)

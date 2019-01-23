@@ -69,4 +69,3 @@ def mainElasticSearch():
     #print(es.search(index="test_labels", body={"query": {"match": {'value': 2}}}))
 
 
-mainElasticSearch()

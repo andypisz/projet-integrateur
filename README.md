@@ -48,6 +48,21 @@ Puis on appelle le script image.py, pour afficher les 10 premières images ayant
 Script pour afficher des images grâce à la librairie matplotlib.pyplot.
 
 
+### globalConstants.py
+
+Un script regroupant l'ensemble des variables que l'on peut utiliser dans les différents scripts, afin de pouvoir les modifier facilement, notamment pour la mise en place de l'environnement
+
 ### clean.py
 
 Script annexe au projet, permettant de nettoyer après de tests. Il faut lui donner en argumant le nombre de conteneurs Minio que l'on a créé pour qu'il les supprime tous.
+
+
+## Mise en place de l'environnement
+
+Il faut mettre en place les répertoires contenant les fichiers (images et labels de test et de train) de la façon suivante pour le bon déroulement des scripts :
+
+Images > Original_images > 1 > fichiers de test (labels et images)
+Images > Images_originales > 2 > fichiers de train (labels et images)
+
+Pour mettre en place l'environnement, il faut modifier la variable suivante dans le script globalConstants.py :
+  - file_FILES_PATH : chemin absolu du répertoire "Images" (voir ci-dessus)

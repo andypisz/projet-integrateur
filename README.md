@@ -66,3 +66,8 @@ Images > Images_originales > 2 > fichiers de train (labels et images)
 
 Pour mettre en place l'environnement, il faut modifier la variable suivante dans le script globalConstants.py :
   - file_FILES_PATH : chemin absolu du répertoire "Images" (voir ci-dessus)
+
+
+## Classification
+
+Les fichiers de données originaux doivent être dans un sous-dossier data (depuis le répertoire où se trouvent les scripts). Les scripts python peuvent nécessiter d'installer des librairies supplémentaires, notamment TensorFlow et Spark. Le programme d'apprentissage est proposé en deux versions, l'une utilisant Spark (tensorflow_Spark.py) et l'autre non (tensorflow.py). Spark peut être lancé en mode local en spécifiant "local" comme master à la place de l'URL du serveur Spark. Ce mode n'a pas d'intérêt en terme de performances mais peut être pratique pour tester le programme si aucun serveur Spark n'est installé.
